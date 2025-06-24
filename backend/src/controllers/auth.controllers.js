@@ -1,6 +1,7 @@
 import { upsertStreamUser } from "../lib/stream.js";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+
 export async function signup (req,res){
     const {fullName, email, password}=req.body;
 
@@ -26,7 +27,7 @@ export async function signup (req,res){
         const randomAvatar = `https://api.dicebear.com/7.x/adventurer/svg?seed=${idx}`
 
         const newUser= await User.create({
-fullName,
+            fullName,
             email,
             password,
             profilePic:randomAvatar,
@@ -103,4 +104,46 @@ export function logout(req,res){
     res.clearCookie("jwt")
      res.status(200).json({success:true,message:"Logout successfull"});
 
+}
+
+export async function onboard(req ,res){
+    try {
+        const userId=req.user._id
+        const {fullName,bio,fieldOfStudy,year,roleInClub,lookingFor}=req.body
+        if(!fullName || !bio || !fieldOfStudy || !year || !roleInClub || !lookingFor){
+            return res.status(400).json(
+                {message:"All fields required",
+                    missingFields:[
+                        !fullName && "fullName",
+                        !bio && "bio",
+                        !fieldOfStudy && "fieldOfSudy",
+                        !year && "year",
+                        !roleInClub && "roleInClub",
+                        !lookingFor && "lookingFor",
+                    ].filter(Boolean),
+
+                
+                });
+        }
+       const updatedUser= await User.findByIdAndUpdate(userId,{
+            ...req.body,
+            isOnboarded:true,
+        },{new:true})
+        if(!updatedUser) return res.status(404).json({message:"User not found"})
+              try {
+                await upsertStreamUser({
+
+                id:updatedUser._id.toString(),
+                name:updatedUser.fullName,
+                image:updatedUser.profilePic || "",
+                })
+                console.log(`Stream user updated after onboarding for ${updatedUser.fullName}`);
+              } catch (streamError) {
+                console.log("Error u[dating Stream user during onboarding:",streamError.message);
+              }
+           res.status(200).json({success:true,user:updatedUser}); 
+    } catch (error) {
+        console.error("Onboarding error:",error);
+        res.status(500).json({message :"Internal server error"});
+    }
 }
