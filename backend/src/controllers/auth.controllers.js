@@ -46,18 +46,13 @@ export async function signup (req,res){
 ;      }
 
 
-
-
-
-
-
-
-
-
+//creating token 
 
         const token=jwt.sign({userId:newUser._id},process.env.JWT_SECRET_KEY,{
             expiresIn:"7d"
         })
+
+   //sending/setting cookie in the client's browser     
         res.cookie("jwt",token,{
             maxAge: 7 * 24 * 60 *60 * 1000,
             httpOnly:true,
