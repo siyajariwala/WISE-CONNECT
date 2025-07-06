@@ -130,7 +130,7 @@ export async function onboard(req ,res){
 
                 id:updatedUser._id.toString(),
                 name:updatedUser.fullName,
-                image:updatedUser.profilePic || "",
+                image:updatedUser.profilePic || "",   
                 })
                 console.log(`Stream user updated after onboarding for ${updatedUser.fullName}`);
               } catch (streamError) {
