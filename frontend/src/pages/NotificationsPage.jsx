@@ -34,6 +34,22 @@ const NotificationsPage = () => {
         >
           ← Back
         </button>
+         <button
+     onClick={() => navigate('/')}
+     className="btn btn-ghost btn-sm"
+     aria-label="Home"
+     title="Home"
+ >
+     Home
++  </button>
+   <button
+     onClick={() => navigate('/friends')}
+     className="btn btn-ghost btn-sm"
+     aria-label="Friends"
+    title="Friends"
+   >
+     Friends
+ </button>
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-6">Notifications</h1>
 
         {isLoading ? (
