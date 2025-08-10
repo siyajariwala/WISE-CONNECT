@@ -6,6 +6,6 @@ export const axiosInstance = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
    headers: {
-    "Content-Type": "application/json", // ✅ this is important
+    "Content-Type": "application/json", 
   }, // send cookies with the request
 });
