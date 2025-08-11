@@ -42,12 +42,6 @@ WISE Connect brings together secure communication, real-time collaboration tools
 
 ---
 
-## 📌 Future Enhancements
-- 🌍 Multi-language support  
-- 📁 File sharing in chats  
-- 📊 User analytics dashboard  
 
----
 
-## 📄 License
-This project is licensed under the **MIT License**.
+
